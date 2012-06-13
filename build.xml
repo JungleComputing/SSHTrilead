@@ -1,0 +1,51 @@
+<project name="trilead" default="build" basedir=".">
+    <description>
+        Build file for trilead
+    </description>
+
+    <target name="build"
+            description="Build Trilead"
+            depends="clean,compile" />
+
+    <property name="src" location="src" />
+    <property name="tmp" location="tmp" />
+    <property name="lib" location="lib" />
+
+    <!-- Compile -->
+    <target name="compile">
+
+        <mkdir dir="${tmp}" />
+        <mkdir dir="${lib}" />
+
+        <!-- classpath -->
+        <path id="default.classpath">
+	    <fileset dir="external">
+		<include name="*.jar" />
+	    </fileset>
+
+            <pathelement path="${tmp}" />
+        </path>
+
+        <!-- Compile the java code from ${src} into ${tmp} -->
+        <javac srcdir="${src}" 
+               destdir="${tmp}" 
+               debug="on"
+               source="1.5"
+               target="1.5"
+               classpathref="default.classpath">
+            <compilerarg value="-Xlint:unchecked" />
+        </javac>
+
+        <!-- Create jar file -->
+        <jar destfile="lib/trilead.jar">
+            <fileset dir="${tmp}" includes="**/*.class" />
+        </jar>
+        <delete dir="${tmp}" />
+    </target>
+
+    <!-- Clean up everything -->
+    <target name="clean" description="Clean up">
+        <delete dir="${tmp}" />
+        <delete dir="${lib}" />
+    </target>
+</project>
