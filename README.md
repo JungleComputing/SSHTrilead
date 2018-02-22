@@ -1,6 +1,4 @@
-
-Trilead SSH-2 for Java - build 213
-==================================
+# Trilead SSH-2 for Java
 
 http://www.trilead.com
 
@@ -22,3 +20,11 @@ Please feel free to contact us. We welcome feedback of any kind!
 Contact: support@trilead.com or go to the public forum at http://www.trilead.com
 
 Zurich, April 2008
+
+## Our modifications
+
+The most important modification is that we added support for ssh agents.
+Unfortunately, our commit history for this package got lost a long time ago.
+
+Ceriel Jacobs
+Amsterdam, Feb 2018

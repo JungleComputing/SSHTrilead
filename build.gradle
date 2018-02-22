@@ -1,0 +1,94 @@
+plugins {
+    id 'java'
+    id 'maven-publish'
+    id "com.jfrog.bintray" version "1.7.3"
+}
+
+version = 'r13339-CJ'
+group = "junglecomputing"
+
+defaultTasks 'jar'
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    jcenter()
+    // Added for stuff that is not in jcenter yet.
+    maven {
+	url 'https://dl.bintray.com/cerieljacobs/JungleComputing'
+    }
+}
+
+dependencies {
+    compile group: 'junglecomputing', name: 'juds', version: '0.94-universal'
+}
+
+def pomConfig = {
+    scm {
+        url "https://github.com/junglecomputing/sshtrilead.git"
+    }
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+javadoc.failOnError = false
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives sourcesJar
+    archives javadocJar
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+	    artifact sourcesJar {
+		classifier "sources"
+	    }
+	    artifact javadocJar {
+		classifier "javadoc"
+	    }
+	    groupId 'junglecomputing'
+	    artifactId 'sshtrilead'
+
+	    pom.withXml {
+                def root = asNode()
+                root.appendNode('url', 'https://github.com/junglecomputing/sshtrilead.git')
+                root.children().last() + pomConfig
+            }
+        }
+    }
+}
+
+tasks.withType(Jar) {
+    destinationDir = file("$rootDir/lib")
+}
+
+bintray {
+    user = System.getenv('BINTRAY_NAME')
+    key = System.getenv('BINTRAY_APIKEY')
+    publications = ['mavenJava']
+    pkg {
+	repo = 'JungleComputing'
+	name = 'sshtrilead'
+	userOrg = "$user"
+	vcsUrl = 'https://github.com/junglecomputing/sshtrilead.git'
+	licenses = ['Apache-1.0']
+	version {
+	    name = "$version"
+	    desc = "$version"
+	    released  = new Date()
+	}
+    }
+}
+
+dependencies {
+    compile group: 'junglecomputing', name: 'juds', version: '0.94-universal'
+}
