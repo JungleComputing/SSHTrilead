@@ -71,6 +71,11 @@ tasks.withType(Jar) {
     destinationDir = file("$rootDir/lib")
 }
 
+task copyRuntimeLibs(type: Copy) {
+    into "lib"
+    from configurations.testRuntime - configurations.runtime
+}
+
 bintray {
     user = System.getenv('BINTRAY_NAME')
     key = System.getenv('BINTRAY_APIKEY')
