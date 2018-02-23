@@ -73,7 +73,7 @@ tasks.withType(Jar) {
 
 task copyRuntimeLibs(type: Copy) {
     into "lib"
-    from configurations.testRuntime - configurations.runtime
+    from configurations.runtime
 }
 
 bintray {
