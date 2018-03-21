@@ -5,7 +5,6 @@ plugins {
 }
 
 version = 'r13339-CJ'
-group = "junglecomputing"
 
 defaultTasks 'jar'
 
@@ -20,7 +19,7 @@ repositories {
 }
 
 dependencies {
-    compile group: 'junglecomputing', name: 'juds', version: '0.94-universal'
+    compile group: 'nl.junglecomputing', name: 'juds', version: '0.94-universal'
 }
 
 def pomConfig = {
@@ -55,8 +54,9 @@ publishing {
 	    artifact javadocJar {
 		classifier "javadoc"
 	    }
-	    groupId 'junglecomputing'
+	    groupId 'nl.junglecomputing'
 	    artifactId 'sshtrilead'
+	    version version
 
 	    pom.withXml {
                 def root = asNode()
@@ -86,14 +86,5 @@ bintray {
 	userOrg = "$user"
 	vcsUrl = 'https://github.com/junglecomputing/sshtrilead.git'
 	licenses = ['Apache-1.0']
-	version {
-	    name = "$version"
-	    desc = "$version"
-	    released  = new Date()
-	}
     }
-}
-
-dependencies {
-    compile group: 'junglecomputing', name: 'juds', version: '0.94-universal'
 }
